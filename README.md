@@ -4,6 +4,7 @@ This project presents a simple lambda-NFA implementation. It accepts alphabets c
 The `State` class provides a graph node type of object, that holds metadata composed of:  
 - the position in the word at which the node was visited;  
 - a boolean value that indicates if the node is a final state in the automata (false by default);   
+
 The `LNFA` class ties multiple `State` objects togheter and provides functionality for setting their attributes and testing the acceptance of words.  
 
 # Usage
