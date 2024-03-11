@@ -61,7 +61,7 @@ bool LNFA::test_acceptance(const std::string &word)
         }
         for (const auto &state: current_state->propagate('\0'))
         {
-            if (current_state->check_loop(current_index))
+            if (!state->reached_loop(current_index))
                 dfs_stack.emplace(state, current_index);
         }
     }
