@@ -26,16 +26,15 @@ void State::add_outgoing_arc(char letter, State *destination)
     this->outgoing_arcs_[letter].emplace_back(destination);
 }
 
-std::vector<State*> State::propagate(char letter)
+std::vector<State *> State::propagate(char letter)
 {
     auto arc_with_letter = this->outgoing_arcs_.find(letter);
-    if(arc_with_letter != this->outgoing_arcs_.end())
+    if (arc_with_letter != this->outgoing_arcs_.end())
     {
         return arc_with_letter->second;
-    }
-    else
+    } else
     {
-        return std::vector<State*>{};
+        return std::vector<State *>{};
     }
 }
 

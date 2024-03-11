@@ -9,7 +9,7 @@ void LNFA::set_initial_state_id(int initial_state_id)
 
 void LNFA::add_states(const std::vector<int> &new_state_ids)
 {
-    for(auto const &state_id : new_state_ids)
+    for (auto const &state_id: new_state_ids)
     {
         this->states_[state_id] = State();
     }
@@ -17,7 +17,7 @@ void LNFA::add_states(const std::vector<int> &new_state_ids)
 
 void LNFA::add_arcs(const std::vector<std::tuple<int, int, char>> &new_arcs)
 {
-    for(auto const &arc : new_arcs)
+    for (auto const &arc: new_arcs)
     {
         this->states_[std::get<0>(arc)].add_outgoing_arc(std::get<2>(arc), &this->states_[std::get<1>(arc)]);
     }
@@ -25,7 +25,7 @@ void LNFA::add_arcs(const std::vector<std::tuple<int, int, char>> &new_arcs)
 
 void LNFA::set_final_states(const std::vector<int> &final_state_ids)
 {
-    for(auto const &state_id : final_state_ids)
+    for (auto const &state_id: final_state_ids)
     {
         this->states_[state_id].set_final();
     }
@@ -33,7 +33,7 @@ void LNFA::set_final_states(const std::vector<int> &final_state_ids)
 
 void LNFA::clear_state_logs()
 {
-    for(auto &state : this->states_)
+    for (auto &state: this->states_)
     {
         state.second.clear_log();
     }
@@ -41,28 +41,28 @@ void LNFA::clear_state_logs()
 
 bool LNFA::test_acceptance(const std::string &word)
 {
-    std::stack<std::pair<State*, size_t>> dfs_stack;
+    std::stack<std::pair<State *, size_t>> dfs_stack;
     size_t word_lenght = word.length();
     dfs_stack.emplace(&this->states_[this->initial_state_id_], 0);
-    while(!dfs_stack.empty())
+    while (!dfs_stack.empty())
     {
-        State* current_state = dfs_stack.top().first;
+        State *current_state = dfs_stack.top().first;
         size_t current_index = dfs_stack.top().second;
         current_state->log_pass(current_index);
         dfs_stack.pop();
-        if(current_state->check_final() && current_index == word_lenght)
+        if (current_state->check_final() && current_index == word_lenght)
         {
             this->clear_state_logs();
             return true;
         }
-        for(const auto &state : current_state->propagate(word[current_index]))
+        for (const auto &state: current_state->propagate(word[current_index]))
         {
             dfs_stack.emplace(state, current_index + 1);
         }
-        for(const auto &state : current_state->propagate('\0'))
+        for (const auto &state: current_state->propagate('\0'))
         {
-            if(current_state->check_loop(current_index))
-            dfs_stack.emplace(state, current_index);
+            if (current_state->check_loop(current_index))
+                dfs_stack.emplace(state, current_index);
         }
     }
     this->clear_state_logs();

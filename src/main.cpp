@@ -3,7 +3,7 @@
 #include "vector"
 #include "lnfa.h"
 #include "string"
-#
+
 
 int main()
 {
@@ -52,7 +52,6 @@ int main()
         input >> word;
         std::cout << "word: " << word << "    acceptance test result: " << automata.test_acceptance(word) << std::endl;
     }
-
 
     return 0;
 }
