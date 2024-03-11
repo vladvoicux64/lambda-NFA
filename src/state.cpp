@@ -11,7 +11,7 @@ bool State::check_final() const
     return this->is_final_;
 }
 
-bool State::check_loop(const size_t &index) const
+bool State::reached_loop(const size_t &index) const
 {
     return (this->log_.find(index) != log_.end());
 }

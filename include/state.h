@@ -14,7 +14,7 @@ private:
 public:
     void set_final();
     bool check_final() const;
-    bool check_loop(const size_t &index) const;
+    bool reached_loop(const size_t &index) const;
     void clear_log();
     void add_outgoing_arc(char letter, State *destination);
     std::vector<State*> propagate(char letter);
