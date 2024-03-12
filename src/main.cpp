@@ -27,7 +27,6 @@ int main()
         int source_id, destination_id;
         char letter;
         input >> source_id >> destination_id >> letter;
-        if (letter == '_') letter = '\0';
         new_arcs.emplace_back(source_id, destination_id, letter);
     }
 

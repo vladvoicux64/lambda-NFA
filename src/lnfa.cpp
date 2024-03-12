@@ -39,6 +39,16 @@ void LNFA::clear_state_logs()
     }
 }
 
+void LNFA::set_lambda(char lambda)
+{
+    this->lambda_character_ = lambda;
+}
+
+char LNFA::get_lambda() const
+{
+    return this->lambda_character_;
+}
+
 bool LNFA::test_acceptance(const std::string &word)
 {
     std::stack<std::pair<State *, size_t>> dfs_stack;
@@ -59,7 +69,7 @@ bool LNFA::test_acceptance(const std::string &word)
         {
             dfs_stack.emplace(state, current_index + 1);
         }
-        for (const auto &state: current_state->propagate('\0'))
+        for (const auto &state: current_state->propagate(this->lambda_character_))
         {
             if (!state->reached_loop(current_index))
                 dfs_stack.emplace(state, current_index);
