@@ -10,7 +10,7 @@ class State
 private:
     std::unordered_map<char, std::vector<State*>> outgoing_arcs_;
     std::set<size_t> log_;
-    bool is_final_;
+    bool is_final_ = false;
 public:
     void set_final();
     bool check_final() const;
