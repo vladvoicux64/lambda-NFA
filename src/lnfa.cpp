@@ -2,12 +2,12 @@
 #include "stack"
 
 
-void LNFA::set_initial_state_id(int initial_state_id)
+void lnfa::LNFA::set_initial_state_id(int initial_state_id)
 {
     this->initial_state_id_ = initial_state_id;
 }
 
-void LNFA::add_states(const std::vector<int> &new_state_ids)
+void lnfa::LNFA::add_states(const std::vector<int> &new_state_ids)
 {
     for (auto const &state_id: new_state_ids)
     {
@@ -15,7 +15,7 @@ void LNFA::add_states(const std::vector<int> &new_state_ids)
     }
 }
 
-void LNFA::add_arcs(const std::vector<std::tuple<int, int, char>> &new_arcs)
+void lnfa::LNFA::add_arcs(const std::vector<std::tuple<int, int, char>> &new_arcs)
 {
     for (auto const &arc: new_arcs)
     {
@@ -23,7 +23,7 @@ void LNFA::add_arcs(const std::vector<std::tuple<int, int, char>> &new_arcs)
     }
 }
 
-void LNFA::set_final_states(const std::vector<int> &final_state_ids)
+void lnfa::LNFA::set_final_states(const std::vector<int> &final_state_ids)
 {
     for (auto const &state_id: final_state_ids)
     {
@@ -31,7 +31,7 @@ void LNFA::set_final_states(const std::vector<int> &final_state_ids)
     }
 }
 
-void LNFA::clear_state_logs()
+void lnfa::LNFA::clear_state_logs()
 {
     for (auto &state: this->states_)
     {
@@ -39,17 +39,17 @@ void LNFA::clear_state_logs()
     }
 }
 
-void LNFA::set_lambda(char lambda)
+void lnfa::LNFA::set_lambda(char lambda)
 {
     this->lambda_character_ = lambda;
 }
 
-char LNFA::get_lambda() const
+char lnfa::LNFA::get_lambda() const
 {
     return this->lambda_character_;
 }
 
-bool LNFA::test_acceptance(const std::string &word)
+bool lnfa::LNFA::test_acceptance(const std::string &word)
 {
     std::stack<std::pair<State *, size_t>> dfs_stack;
     size_t word_lenght = word.length();

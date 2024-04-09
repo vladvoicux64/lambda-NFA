@@ -11,7 +11,7 @@ int main()
     int N, M, S, nrF, NrCuv;
     std::vector<int> new_state_ids, final_state_ids;
     std::vector<std::tuple<int, int, char>> new_arcs;
-    LNFA automata = LNFA();
+    lnfa::LNFA automata = lnfa::LNFA();
 
     input >> N;
     for (int i = 0; i < N; ++i)
@@ -46,6 +46,7 @@ int main()
     automata.set_final_states(final_state_ids);
 
     input >> NrCuv;
+    automata.set_lambda('.');
     for (int i = 0; i < NrCuv; ++i)
     {
         std::string word;
