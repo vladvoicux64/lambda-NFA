@@ -20,6 +20,10 @@ void lnfa::LNFA::add_arcs(const std::vector<std::tuple<int, int, char>> &new_arc
     for (auto const &arc: new_arcs)
     {
         this->states_[std::get<0>(arc)].add_outgoing_arc(std::get<2>(arc), &this->states_[std::get<1>(arc)]);
+        if (std::get<2>(arc) == this->lambda_character_)
+            this->type = LAMBDANONDETERMINISTIC;
+        if ((this->states_[std::get<0>(arc)].propagate(std::get<2>(arc)).size() >= 2) && this->type != LAMBDANONDETERMINISTIC)
+            this->type = NONDETERMINISTIC;
     }
 }
 
@@ -77,4 +81,9 @@ bool lnfa::LNFA::test_acceptance(const std::string &word)
     }
     this->clear_state_logs();
     return false;
+}
+
+lnfa::aut_type lnfa::LNFA::get_type() const
+{
+    return this->type;
 }

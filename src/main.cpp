@@ -21,6 +21,8 @@ int main()
         new_state_ids.emplace_back(id);
     }
 
+    automata.set_lambda('.');
+
     input >> M;
     for (int i = 0; i < M; ++i)
     {
@@ -45,8 +47,9 @@ int main()
     automata.set_initial_state_id(S);
     automata.set_final_states(final_state_ids);
 
+    std::cout << automata.get_type() << std::endl;
+
     input >> NrCuv;
-    automata.set_lambda('.');
     for (int i = 0; i < NrCuv; ++i)
     {
         std::string word;
