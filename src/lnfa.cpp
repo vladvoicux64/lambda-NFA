@@ -1,5 +1,6 @@
 #include "lnfa.h"
 #include "stack"
+#include "cassert"
 
 
 void lnfa::LNFA::set_initial_state_id(int initial_state_id)
@@ -86,4 +87,12 @@ bool lnfa::LNFA::test_acceptance(const std::string &word)
 lnfa::aut_type lnfa::LNFA::get_type() const
 {
     return this->type;
+}
+
+lnfa::LNFA lnfa::nfa2dfa(const lnfa::LNFA& nfa)
+{
+    assert(nfa.get_type() == NONDETERMINISTIC);
+    std::vector<char> eng_sigma = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+
+    std::vector<int> dfa_state_ids = {0};
 }

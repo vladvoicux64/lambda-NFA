@@ -31,6 +31,8 @@ namespace lnfa {
         [[maybe_unused]] char get_lambda() const;
         [[maybe_unused]] aut_type get_type() const;
         bool test_acceptance(const std::string &word);
+
+    friend LNFA nfa2dfa(const LNFA& nfa);
     };
 }
 
