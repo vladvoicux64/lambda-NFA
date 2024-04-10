@@ -1,6 +1,8 @@
 #include "lnfa.h"
 #include "stack"
 #include "cassert"
+#include "map"
+#include "queue"
 
 
 void lnfa::LNFA::set_initial_state_id(int initial_state_id)
@@ -89,10 +91,51 @@ lnfa::aut_type lnfa::LNFA::get_type() const
     return this->type;
 }
 
-lnfa::LNFA lnfa::nfa2dfa(const lnfa::LNFA& nfa)
+lnfa::LNFA lnfa::nfa2dfa(lnfa::LNFA &nfa)
 {
     assert(nfa.get_type() == NONDETERMINISTIC);
     std::vector<char> eng_sigma = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
 
     std::vector<int> dfa_state_ids = {0};
+    std::vector<std::tuple<int, int, char>> dfa_arcs;
+    std::map<std::vector<State *>, int> dfa_state_ids_table;
+    std::vector<int> dfa_final_state_ids;
+    std::queue<std::vector<State *>> states_to_transition_from;
+
+    dfa_state_ids_table[{&nfa.states_.at(nfa.initial_state_id_)}] = 0;
+    int last_id = 1;
+    states_to_transition_from.push({&nfa.states_.at(nfa.initial_state_id_)});
+
+    while (!states_to_transition_from.empty()) {
+        int curr_id = dfa_state_ids_table[states_to_transition_from.front()];
+        for (const auto &letter: eng_sigma) {
+            std::vector<State *> new_state;
+            bool is_final = false;
+            for (const auto &state: states_to_transition_from.front()) {
+                if (state->check_final())
+                    is_final = true;
+                auto state_fragment = state->propagate(letter);
+                new_state.insert(std::end(new_state), std::begin(state_fragment), std::end(state_fragment));
+            }
+            if (is_final)
+                dfa_final_state_ids.emplace_back(curr_id);
+            if (!new_state.empty()) {
+                if (dfa_state_ids_table.find(new_state) == dfa_state_ids_table.end()) {
+                    dfa_state_ids.emplace_back(last_id);
+                    dfa_state_ids_table[new_state] = last_id++;
+                    states_to_transition_from.push(new_state);
+                }
+                dfa_arcs.emplace_back(curr_id, dfa_state_ids_table[new_state], letter);
+            }
+        }
+        states_to_transition_from.pop();
+    }
+
+    LNFA dfa;
+    dfa.add_states(dfa_state_ids);
+    dfa.add_arcs(dfa_arcs);
+    dfa.set_final_states(dfa_final_state_ids);
+    dfa.set_initial_state_id(0);
+
+    return dfa;
 }

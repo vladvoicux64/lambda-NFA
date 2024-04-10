@@ -2,13 +2,12 @@
 #include "fstream"
 #include "vector"
 #include "lnfa.h"
-#include "string"
 
 
 int main()
 {
     std::ifstream input("input.txt");
-    int N, M, S, nrF, NrCuv;
+    int N, M, S, nrF;
     std::vector<int> new_state_ids, final_state_ids;
     std::vector<std::tuple<int, int, char>> new_arcs;
     lnfa::LNFA automata = lnfa::LNFA();
@@ -21,6 +20,7 @@ int main()
         new_state_ids.emplace_back(id);
     }
 
+    //TODO remember to modify the README.md file to document the need to set lambda before reading for the inferrence to work properly
     automata.set_lambda('.');
 
     input >> M;
@@ -48,14 +48,7 @@ int main()
     automata.set_final_states(final_state_ids);
 
     std::cout << automata.get_type() << std::endl;
-
-    input >> NrCuv;
-    for (int i = 0; i < NrCuv; ++i)
-    {
-        std::string word;
-        input >> word;
-        std::cout << "word: " << word << "    acceptance test result: " << automata.test_acceptance(word) << std::endl;
-    }
-
+    lnfa::LNFA dfa = lnfa::nfa2dfa(automata);
+    std::cout << dfa.get_type() << std::endl;
     return 0;
 }

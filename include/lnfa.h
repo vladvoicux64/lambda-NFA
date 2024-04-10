@@ -32,10 +32,10 @@ namespace lnfa {
         [[maybe_unused]] aut_type get_type() const;
         bool test_acceptance(const std::string &word);
 
-    friend LNFA nfa2dfa(const LNFA& nfa);
+        friend LNFA nfa2dfa(LNFA &nfa);
     };
+
+    LNFA nfa2dfa(LNFA &nfa);
 }
-
-
 
 #endif //LFA_LAB_LAMBDA_NFA_H
