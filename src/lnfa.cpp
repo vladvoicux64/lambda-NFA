@@ -2,6 +2,7 @@
 #include "stack"
 #include "cassert"
 #include "map"
+#include "set"
 #include "queue"
 
 
@@ -98,9 +99,9 @@ lnfa::LNFA lnfa::nfa2dfa(lnfa::LNFA &nfa)
 
     std::vector<int> dfa_state_ids = {0};
     std::vector<std::tuple<int, int, char>> dfa_arcs;
-    std::map<std::vector<State *>, int> dfa_state_ids_table;
+    std::map<std::set<State *>, int> dfa_state_ids_table;
     std::vector<int> dfa_final_state_ids;
-    std::queue<std::vector<State *>> states_to_transition_from;
+    std::queue<std::set<State *>> states_to_transition_from;
 
     dfa_state_ids_table[{&nfa.states_.at(nfa.initial_state_id_)}] = 0;
     int last_id = 1;
@@ -109,13 +110,15 @@ lnfa::LNFA lnfa::nfa2dfa(lnfa::LNFA &nfa)
     while (!states_to_transition_from.empty()) {
         int curr_id = dfa_state_ids_table[states_to_transition_from.front()];
         for (const auto &letter: eng_sigma) {
-            std::vector<State *> new_state;
+            std::set<State *> new_state;
             bool is_final = false;
             for (const auto &state: states_to_transition_from.front()) {
                 if (state->check_final())
                     is_final = true;
                 auto state_fragment = state->propagate(letter);
-                new_state.insert(std::end(new_state), std::begin(state_fragment), std::end(state_fragment));
+                for (const auto &transitioned_state : state_fragment) {
+                    new_state.insert(transitioned_state);
+                }
             }
             if (is_final)
                 dfa_final_state_ids.emplace_back(curr_id);
