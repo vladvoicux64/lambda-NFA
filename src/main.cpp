@@ -2,11 +2,11 @@
 #include "fstream"
 #include "vector"
 #include "lnfa.h"
-
+#include "pratt_parser.h"
 
 int main()
 {
-    std::ifstream input("input.txt");
+    /*std::ifstream input("input.txt");
     int N, M, S, nrF;
     std::vector<int> new_state_ids, final_state_ids;
     std::vector<std::tuple<int, int, char>> new_arcs;
@@ -49,6 +49,9 @@ int main()
 
     std::cout << automata.get_type() << std::endl;
     lnfa::LNFA dfa = lnfa::nfa2dfa(automata);
-    std::cout << dfa.get_type() << std::endl;
+    std::cout << dfa.get_type() << std::endl;*/
+    //TODO fail on bad input and document this
+    parser::S_expression expr("");
+    std::cout << expr.get_expr_str();
     return 0;
 }
