@@ -1,32 +1,32 @@
 #include "state.h"
 
 
-void State::set_final()
+void lnfa::State::set_final()
 {
     this->is_final_ = true;
 }
 
-bool State::check_final() const
+bool lnfa::State::check_final() const
 {
     return this->is_final_;
 }
 
-bool State::reached_loop(const size_t &index) const
+bool lnfa::State::reached_loop(const size_t &index) const
 {
     return (this->log_.find(index) != log_.end());
 }
 
-void State::clear_log()
+void lnfa::State::clear_log()
 {
     this->log_.clear();
 }
 
-void State::add_outgoing_arc(char letter, State *destination)
+void lnfa::State::add_outgoing_arc(char letter, State *destination)
 {
     this->outgoing_arcs_[letter].emplace_back(destination);
 }
 
-std::vector<State *> State::propagate(char letter)
+std::vector<lnfa::State *> lnfa::State::propagate(char letter)
 {
     auto arc_with_letter = this->outgoing_arcs_.find(letter);
     if (arc_with_letter != this->outgoing_arcs_.end())
@@ -38,7 +38,7 @@ std::vector<State *> State::propagate(char letter)
     }
 }
 
-void State::log_pass(const size_t &string_index)
+void lnfa::State::log_pass(const size_t &string_index)
 {
     this->log_.emplace(string_index);
 }
