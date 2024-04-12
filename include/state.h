@@ -1,10 +1,10 @@
 #ifndef LAMBDA_NFA_STATE_H
 #define LAMBDA_NFA_STATE_H
 
-#include "unordered_map"
-#include "vector"
+#include <unordered_map>
+#include <vector>
 #include <cstddef>
-#include "set"
+#include <set>
 
 namespace lnfa
 {

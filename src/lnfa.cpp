@@ -1,12 +1,12 @@
 #include "lnfa.h"
-#include "stack"
-#include "cassert"
-#include "map"
-#include "set"
-#include "queue"
-#include "unordered_map"
-#include "algorithm"
-#include "sstream"
+#include <stack>
+#include <cassert>
+#include <map>
+#include <set>
+#include <queue>
+#include <unordered_map>
+#include <algorithm>
+#include <sstream>
 #include "pratt_parser.h"
 
 int lnfa::automata_template::new_state_id = 0;

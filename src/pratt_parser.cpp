@@ -4,11 +4,11 @@
 
 #include "pratt_parser.h"
 
-#include "utility"
-#include "cctype"
-#include "algorithm"
-#include "cassert"
-#include "sstream"
+#include <utility>
+#include <cctype>
+#include <algorithm>
+#include <cassert>
+#include <sstream>
 
 parser::token::token(char character) : character_(character)
 {

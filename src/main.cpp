@@ -1,6 +1,6 @@
-#include "iostream"
-#include "fstream"
-#include "vector"
+#include <iostream>
+#include <fstream>
+#include <vector>
 #include "lnfa.h"
 #include "pratt_parser.h"
 

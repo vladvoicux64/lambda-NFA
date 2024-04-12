@@ -1,8 +1,8 @@
 #ifndef LAMBDA_NFA_PRATT_PARSER_H
 #define LAMBDA_NFA_PRATT_PARSER_H
 
-#include "vector"
-#include "string"
+#include <vector>
+#include <string>
 
 namespace parser {
     typedef enum token_type {

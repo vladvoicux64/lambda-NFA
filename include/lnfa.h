@@ -2,10 +2,10 @@
 #define LFA_LAB_LAMBDA_NFA_H
 
 #include "state.h"
-#include "unordered_map"
-#include "vector"
-#include "string"
-#include "tuple"
+#include <unordered_map>
+#include <string>
+#include <tuple>
+#include <vector>
 #include "pratt_parser.h"
 
 namespace lnfa {
