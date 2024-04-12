@@ -4,7 +4,12 @@
 #include "map"
 #include "set"
 #include "queue"
+#include "unordered_map"
+#include "algorithm"
+#include "sstream"
+#include "pratt_parser.h"
 
+int lnfa::automata_template::new_state_id = 0;
 
 void lnfa::LNFA::set_initial_state_id(int initial_state_id)
 {
@@ -142,3 +147,128 @@ lnfa::LNFA lnfa::nfa2dfa(lnfa::LNFA &nfa)
 
     return dfa;
 }
+
+lnfa::automata_template lnfa::char_automata(char input) {
+    if (input == '_') {
+        lnfa::automata_template templ;
+        templ.initial_state_id = automata_template::new_state_id++;
+        templ.new_state_ids.emplace_back(templ.initial_state_id);
+        templ.final_state_ids.emplace_back(templ.initial_state_id);
+        return templ;
+    }
+    else {
+        lnfa::automata_template templ;
+        int state1 = automata_template::new_state_id++;
+        int state2 = automata_template::new_state_id++;
+        templ.initial_state_id = state1;
+        templ.new_state_ids.emplace_back(state1);
+        templ.new_state_ids.emplace_back(state2);
+        templ.final_state_ids.emplace_back(state2);
+        templ.new_arcs.emplace_back(state1, state2, input);
+        return templ;
+    }
+}
+
+lnfa::automata_template lnfa::automata_union(lnfa::automata_template aut1, lnfa::automata_template aut2)
+{
+    lnfa::automata_template templ;
+    templ.new_state_ids.insert(templ.new_state_ids.end(), aut1.new_state_ids.begin(), aut1.new_state_ids.end());
+    templ.new_state_ids.insert(templ.new_state_ids.end(), aut2.new_state_ids.begin(), aut2.new_state_ids.end());
+    templ.new_arcs.insert(templ.new_arcs.end(), aut1.new_arcs.begin(), aut1.new_arcs.end());
+    templ.new_arcs.insert(templ.new_arcs.end(), aut2.new_arcs.begin(), aut2.new_arcs.end());
+    templ.final_state_ids.insert(templ.final_state_ids.end(), aut1.final_state_ids.begin(), aut1.final_state_ids.end());
+    templ.final_state_ids.insert(templ.final_state_ids.end(), aut2.final_state_ids.begin(), aut2.final_state_ids.end());
+    templ.initial_state_id = automata_template::new_state_id++;
+    templ.new_arcs.emplace_back(templ.initial_state_id, aut1.initial_state_id, '_');
+    templ.new_arcs.emplace_back(templ.initial_state_id, aut2.initial_state_id, '_');
+    return templ;
+}
+
+lnfa::automata_template lnfa::automata_concat(lnfa::automata_template aut1, lnfa::automata_template aut2)
+{
+    lnfa::automata_template templ;
+    templ.new_state_ids.insert(templ.new_state_ids.end(), aut1.new_state_ids.begin(), aut1.new_state_ids.end());
+    templ.new_state_ids.insert(templ.new_state_ids.end(), aut2.new_state_ids.begin(), aut2.new_state_ids.end());
+    templ.new_arcs.insert(templ.new_arcs.end(), aut1.new_arcs.begin(), aut1.new_arcs.end());
+    templ.new_arcs.insert(templ.new_arcs.end(), aut2.new_arcs.begin(), aut2.new_arcs.end());
+    templ.final_state_ids.insert(templ.final_state_ids.end(), aut2.final_state_ids.begin(), aut2.final_state_ids.end());
+    templ.initial_state_id = aut1.initial_state_id;
+    for (const auto &state : aut1.final_state_ids) {
+        templ.new_arcs.emplace_back(state, aut2.initial_state_id, '_');
+    }
+    return templ;
+}
+
+lnfa::automata_template lnfa::automata_star(lnfa::automata_template aut)
+{
+    lnfa::automata_template templ;
+    templ.new_state_ids.insert(templ.new_state_ids.end(), aut.new_state_ids.begin(), aut.new_state_ids.end());
+    templ.new_arcs.insert(templ.new_arcs.end(), aut.new_arcs.begin(), aut.new_arcs.end());
+    templ.final_state_ids.insert(templ.final_state_ids.end(), aut.final_state_ids.begin(), aut.final_state_ids.end());
+    templ.initial_state_id = automata_template::new_state_id++;
+    templ.new_state_ids.emplace_back(templ.initial_state_id);
+    templ.final_state_ids.emplace_back(templ.initial_state_id);
+    templ.new_arcs.emplace_back(templ.initial_state_id, aut.initial_state_id, '_');
+    for (const auto &final_state : aut.final_state_ids) {
+        templ.new_arcs.emplace_back(final_state, templ.initial_state_id, '_');
+    }
+    return templ;
+}
+
+lnfa::LNFA lnfa::automata_template::get_automata() const
+{
+    LNFA automata = LNFA();
+    automata.add_states(this->new_state_ids);
+    automata.add_arcs(this->new_arcs);
+    automata.set_initial_state_id(this->initial_state_id);
+    automata.set_final_states(this->final_state_ids);
+
+    return automata;
+}
+
+lnfa::LNFA lnfa::build_from_S_expr(std::vector<parser::token> input)
+{
+    std::reverse(input.begin(), input.end());
+    std::stack<automata_template> build_stack;
+    for (const auto &token : input) {
+        if (token.get_type() == parser::ATOM) {
+            build_stack.push(char_automata(token.get_character()));
+        }
+        else {
+            switch (token.get_character()) {
+                break; case '+':
+                {
+                    automata_template aut1, aut2, aut;
+                    aut1 = build_stack.top();
+                    build_stack.pop();
+                    aut2 = build_stack.top();
+                    build_stack.pop();
+                    aut = automata_concat(aut1, aut2);
+                    build_stack.push(aut);
+                }
+                break; case '*':
+                {
+                    automata_template aut;
+                    aut = build_stack.top();
+                    build_stack.pop();
+                    aut = automata_star(aut);
+                    build_stack.push(aut);
+                }
+                break; case '|':
+                {
+                    automata_template aut1, aut2, aut;
+                    aut1 = build_stack.top();
+                    build_stack.pop();
+                    aut2 = build_stack.top();
+                    build_stack.pop();
+                    aut = automata_union(aut1, aut2);
+                    build_stack.push(aut);
+                }
+            }
+        }
+    }
+    return build_stack.top().get_automata();
+}
+
+
+

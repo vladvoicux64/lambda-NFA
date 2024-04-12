@@ -6,6 +6,7 @@
 #include "vector"
 #include "string"
 #include "tuple"
+#include "pratt_parser.h"
 
 namespace lnfa {
     typedef enum aut_type {
@@ -33,9 +34,30 @@ namespace lnfa {
         bool test_acceptance(const std::string &word);
 
         friend LNFA nfa2dfa(LNFA &nfa);
+
+    };
+
+    class automata_template {
+    private:
+        static int new_state_id;
+        std::vector<int> new_state_ids, final_state_ids;
+        std::vector<std::tuple<int, int, char>> new_arcs;
+        int initial_state_id;
+
+        friend automata_template char_automata(char input);
+        friend automata_template automata_union(automata_template aut1, automata_template aut2);
+        friend automata_template automata_concat(automata_template aut1, automata_template aut2);
+        friend automata_template automata_star(automata_template aut);
+    public:
+        [[nodiscard]] LNFA get_automata() const;
     };
 
     LNFA nfa2dfa(LNFA &nfa);
+    LNFA build_from_S_expr(std::vector<parser::token> input);
+    automata_template char_automata(char input);
+    automata_template automata_union(automata_template aut1, automata_template aut2);
+    automata_template automata_concat(automata_template aut1, automata_template aut2);
+    automata_template automata_star(automata_template aut);
 }
 
 #endif //LFA_LAB_LAMBDA_NFA_H

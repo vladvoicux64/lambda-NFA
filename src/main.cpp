@@ -6,7 +6,7 @@
 
 int main()
 {
-    /*std::ifstream input("input.txt");
+    std::ifstream input("input.txt");
     int N, M, S, nrF;
     std::vector<int> new_state_ids, final_state_ids;
     std::vector<std::tuple<int, int, char>> new_arcs;
@@ -49,9 +49,11 @@ int main()
 
     std::cout << automata.get_type() << std::endl;
     lnfa::LNFA dfa = lnfa::nfa2dfa(automata);
-    std::cout << dfa.get_type() << std::endl;*/
+    std::cout << dfa.get_type() << std::endl;
+
     //TODO document this
-    parser::S_expression expr("ab|a");
-    std::cout << expr.get_expr_str();
+    parser::S_expression expr("(ab)*|_");
+    lnfa::LNFA automata2 = lnfa::build_from_S_expr(expr.get_expr_vector());
+    std::cout << automata2.test_acceptance("ababab") << std::endl;
     return 0;
 }
