@@ -50,8 +50,8 @@ int main()
     std::cout << automata.get_type() << std::endl;
     lnfa::LNFA dfa = lnfa::nfa2dfa(automata);
     std::cout << dfa.get_type() << std::endl;*/
-    //TODO fail on bad input and document this
-    parser::S_expression expr("");
+    //TODO document this
+    parser::S_expression expr("ab|a");
     std::cout << expr.get_expr_str();
     return 0;
 }

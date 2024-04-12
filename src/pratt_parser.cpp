@@ -12,7 +12,7 @@
 
 parser::token::token(char character) : character_(character)
 {
-    if (isalnum(character)) type_ = ATOM;
+    if (isalnum(character) || character == '_') type_ = ATOM;
     else if (character != 0) type_ = OPERATOR;
     else type_ = EOF_TOKEN;
 }
@@ -61,9 +61,9 @@ std::pair<char, char> parser::binding_power(token op) {
         case '*':
             return std::make_pair('5', 'a');
         case '|':
-            return std::make_pair('3', '4');
-        case '+':
             return std::make_pair('1', '2');
+        case '+':
+            return std::make_pair('3', '5');
         default:
             return std::make_pair('a', 'a');
     }
@@ -74,10 +74,12 @@ std::vector<parser::token> parser::S_expression::expr_bp(parser::lexer &temp_lex
     std::vector<token> lhs = {temp_lex.next()};
 
     if (lhs[0].get_type() != ATOM){
-        if (lhs[0].get_character() == '(') {
-            lhs = expr_bp(temp_lex, 0);
-            assert(temp_lex.next().get_character() == ')');
-        }
+
+        assert(lhs[0].get_character() == '(');
+
+        lhs = expr_bp(temp_lex, 0);
+
+        assert(temp_lex.next().get_character() == ')');
     }
 
     while(true) {
