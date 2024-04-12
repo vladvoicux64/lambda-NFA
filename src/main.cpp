@@ -20,7 +20,6 @@ int main()
         new_state_ids.emplace_back(id);
     }
 
-    //TODO remember to modify the README.md file to document the need to set lambda before reading for the inferrence to work properly
     automata.set_lambda('.');
 
     input >> M;
@@ -51,10 +50,9 @@ int main()
     lnfa::LNFA dfa = lnfa::nfa2dfa(automata);
     //std::cout << dfa.get_type() << std::endl;
 
-    //TODO document this
-    parser::S_expression expr("(ab*)|a*b(ca)*");
+    parser::S_expression expr("(a_b*)|a*b(ca)*");
     std::cout << expr.get_expr_str() << std::endl;
     lnfa::LNFA automata2 = lnfa::build_from_S_expr(expr.get_expr_vector());
-    std::cout << automata2.test_acceptance("aaaaabcaca") << std::endl;
+    std::cout << automata2.test_acceptance("a_b") << std::endl;
     return 0;
 }
