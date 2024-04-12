@@ -63,7 +63,7 @@ std::pair<char, char> parser::binding_power(token op) {
         case '|':
             return std::make_pair('1', '2');
         case '+':
-            return std::make_pair('3', '5');
+            return std::make_pair('3', '4');
         default:
             return std::make_pair('a', 'a');
     }
