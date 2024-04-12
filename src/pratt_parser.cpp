@@ -88,7 +88,7 @@ std::vector<parser::token> parser::S_expression::expr_bp(parser::lexer &temp_lex
 
         //implicit concat
         bool is_implicit_concat = false;
-        if(op.get_type() == ATOM) {
+        if(op.get_type() == ATOM || op.get_character() == '(') {
             op = token('+');
             is_implicit_concat = true;
         }
