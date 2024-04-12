@@ -46,13 +46,13 @@ int main()
     automata.set_initial_state_id(S);
     automata.set_final_states(final_state_ids);
 
-    //std::cout << automata.get_type() << std::endl;
+    std::cout << automata.get_type() << std::endl;
     lnfa::LNFA dfa = lnfa::nfa2dfa(automata);
-    //std::cout << dfa.get_type() << std::endl;
+    std::cout << dfa.get_type() << std::endl;
 
-    parser::S_expression expr("(a_b*)|a*b(ca)*");
+    parser::S_expression expr("(ab*)|a*b(ca)*");
     std::cout << expr.get_expr_str() << std::endl;
     lnfa::LNFA automata2 = lnfa::build_from_S_expr(expr.get_expr_vector());
-    std::cout << automata2.test_acceptance("a_b") << std::endl;
+    std::cout << automata2.test_acceptance("aaaabca") << std::endl;
     return 0;
 }
