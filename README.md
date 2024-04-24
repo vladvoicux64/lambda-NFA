@@ -14,7 +14,7 @@ testing the acceptance of words.
 ## The `LNFA` class
 
 The user is supposed to only interact with the `LNFA` class.  
-The `LNFA` class provides t methods that will be described below:
+The `LNFA` class provides 7 methods that will be described below:
 
 - `add_states(1)`: this method takes a `std::vector<int>` and creates states with those respective IDs, binding them to the automata object from where it is called;  
 - `add_arcs(1)`: this method takes a `std::vector<std:;tuple<int, int, char>>` and creates arcs from the respective tuples, treating their members as <source, destination, transition character>;  
@@ -48,6 +48,7 @@ The special characters have the following meanings:
 - `*` starring an expression means any (or none) occurrences of the expression;
 - `|` expression union;
 - `+` expression concatenation, can be omitted;
+- `_` lambda character;
 
 To use, instantiate an object of the class, passing a valid RegEx to the constructor.
 Then, use the `get_expr_str(0)` or `get_expr_vector(0)` to receive the S-expression as a string or as a token vector.
