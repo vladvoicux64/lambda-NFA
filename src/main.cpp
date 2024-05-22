@@ -1,12 +1,14 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <sstream>
 #include "lnfa.h"
 #include "pratt_parser.h"
+#include "CFG.h"
 
 int main()
 {
-    std::ifstream input("input.txt");
+    /*std::ifstream input("input.txt");
     int N, M, S, nrF;
     std::vector<int> new_state_ids, final_state_ids;
     std::vector<std::tuple<int, int, char>> new_arcs;
@@ -53,6 +55,21 @@ int main()
     parser::S_expression expr("(ab*)|a*b(ca)*");
     std::cout << expr.get_expr_str() << std::endl;
     lnfa::LNFA automata2 = lnfa::build_from_S_expr(expr.get_expr_vector());
-    std::cout << automata2.test_acceptance("aaaabca") << std::endl;
+    std::cout << automata2.test_acceptance("aaaabca") << std::endl;*/
+
+    std::ifstream input("input.txt");
+    std::unordered_map<std::string, std::vector<std::string>> prods;
+    std::string line;
+    while(std::getline(input, line))
+    {
+        std::stringstream line_stream(line);
+        std::string variable, rule;
+        line_stream >> variable;
+        while(line_stream >> rule) {
+            prods[variable].emplace_back(rule);
+        }
+    }
+    CFG grammar(prods);
+    std::cout << grammar.verify_word("baaba");
     return 0;
 }

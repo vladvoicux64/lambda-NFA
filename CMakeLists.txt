@@ -13,4 +13,6 @@ add_executable(lambda_NFA
         src/state.cpp
         include/state.h
         src/pratt_parser.cpp
-        include/pratt_parser.h)
+        include/pratt_parser.h
+        src/CFG.cpp
+        include/CFG.h)
