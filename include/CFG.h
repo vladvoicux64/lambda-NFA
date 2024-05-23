@@ -10,14 +10,19 @@
 #include <string>
 #include <vector>
 
-class CFG
+namespace CFG
 {
-private:
-    std::unordered_map<std::string, std::vector<std::string>> prods_;
-public:
-    explicit CFG(std::unordered_map<std::string, std::vector<std::string>> prods);
-    bool verify_word(std::string word);
-};
+    class CFG
+    {
+    private:
+        std::unordered_map<std::string, std::vector<std::string>> prods_;
+    public:
+        explicit CFG(std::unordered_map<std::string, std::vector<std::string>> prods);
+
+        bool verify_word(std::string word);
+    };
+}
+
 
 
 #endif //LAMBDA_NFA_CFG_H

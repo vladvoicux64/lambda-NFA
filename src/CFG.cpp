@@ -7,11 +7,11 @@
 
 #include <utility>
 
-CFG::CFG(std::unordered_map<std::string, std::vector<std::string>> prods) : prods_(std::move(prods))
+CFG::CFG::CFG(std::unordered_map<std::string, std::vector<std::string>> prods) : prods_(std::move(prods))
 {
 }
 
-bool CFG::verify_word(std::string word)
+bool CFG::CFG::verify_word(std::string word)
 {
     size_t word_len = word.length();
     std::string dp_table[256][256];
