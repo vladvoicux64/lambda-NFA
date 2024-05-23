@@ -81,7 +81,7 @@ Note: to test the empty word, leave a blank line after all the non-blank words, 
 This project probably received more attention from me than it deserved. Mostly because it has been a great way to dive
 deeper into a new subject, which I would have otherwise left unexplored.
 It also contains lazy, incomplete, or straight up smelly code. That is a direct result of me being lazy, although I may
-argue over my chocies (such as not using polymorphism between the 3 automaton types, because other than some conditions
+argue over my choices (such as not using polymorphism between the 3 automaton types, because other than some conditions
 on the content, the structure stays the same). If by any chance you get to reach the end of this README and then have
 enough
 fucks to give left to look over the code, and can provide (preferably harsh, but constructive) feedback, please do
