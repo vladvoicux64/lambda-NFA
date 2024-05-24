@@ -1,17 +1,15 @@
 #include "pda.h"
 #include <stack>
 #include <cassert>
-#include <map>
-#include <set>
 #include <queue>
 #include <unordered_map>
-#include <algorithm>
 #include <sstream>
 
 
 void pda::pda::set_initial_state_id(int initial_state_id)
 {
     this->initial_state_id_ = initial_state_id;
+    this->states_.at(initial_state_id).set_initial_stack();
 }
 
 void pda::pda::add_states(const std::vector<int> &new_state_ids)
@@ -64,7 +62,7 @@ bool pda::pda::test_acceptance(const std::string &word)
         size_t current_index = dfs_stack.top().second;
         current_state->log_pass(current_index);
         dfs_stack.pop();
-        if (current_state->check_final() && current_index == word_lenght) {
+        if (current_state->check_final() && current_index == word_lenght && current_state->stack_empty()) {
             this->clear_state_logs();
             return true;
         }
