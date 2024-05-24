@@ -1,9 +1,7 @@
 #include "pda.h"
 #include <stack>
-#include <cassert>
 #include <queue>
 #include <unordered_map>
-#include <sstream>
 
 
 void pda::pda::set_initial_state_id(int initial_state_id)

@@ -1,5 +1,6 @@
 #include "pdastate.h"
-
+#include <string>
+#include <algorithm>
 
 void pda::State::set_final()
 {

@@ -6,6 +6,7 @@
 #include <cstddef>
 #include <stack>
 #include <set>
+#include <string>
 
 namespace pda
 {
