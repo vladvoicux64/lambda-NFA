@@ -10,7 +10,6 @@
 
 namespace pda
 {
-
     class pda
     {
     private:
@@ -31,11 +30,11 @@ namespace pda
 
         [[maybe_unused]] void set_lambda(char lambda);
 
-        [[maybe_unused]] char get_lambda() const;
+        [[maybe_unused]] [[nodiscard]] char get_lambda() const;
 
         bool test_acceptance(const std::string &word);
     };
 
-} // pda
+}
 
 #endif //LAMBDA_NFA_PDA_H

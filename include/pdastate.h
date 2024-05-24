@@ -1,5 +1,5 @@
-#ifndef LAMBDA_NFA_STATE_H
-#define LAMBDA_NFA_STATE_H
+#ifndef LAMBDA_NFA_PDASTATE_H
+#define LAMBDA_NFA_PDASTATE_H
 
 #include <unordered_map>
 #include <vector>
@@ -20,9 +20,9 @@ namespace pda
     public:
         void set_final();
 
-        bool check_final() const;
+        [[nodiscard]] bool check_final() const;
 
-        bool reached_loop(const size_t &index) const;
+        [[nodiscard]] bool reached_loop(const size_t &index) const;
 
         void clear_log();
 
@@ -41,4 +41,4 @@ namespace pda
     };
 }
 
-#endif //LAMBDA_NFA_STATE_H
+#endif //LAMBDA_NFA_PDASTATE_H
