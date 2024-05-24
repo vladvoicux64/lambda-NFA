@@ -11,7 +11,7 @@ int main()
     int N, M, S, nrF;
     std::vector<int> new_state_ids, final_state_ids;
     std::vector<std::tuple<int, int, char, std::pair<char, std::string>>> new_arcs;
-    pda::pda automata = pda::pda();
+    pda::PDA automata = pda::PDA();
 
     input >> N;
     for (int i = 0; i < N; ++i)

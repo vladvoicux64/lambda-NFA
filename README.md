@@ -13,7 +13,6 @@ testing the acceptance of words.
 
 ## The `LNFA` class
 
-The user is supposed to only interact with the `LNFA` class.  
 The `LNFA` class provides 7 methods that will be described below:
 
 - `add_states(1)`: this method takes a `std::vector<int>` and creates states with those respective IDs, binding them to the automata object from where it is called;  
@@ -60,29 +59,35 @@ order to use it.
 To do so, use the `build_from_S_expr(1)` function, passing the token vector form of the S-expression to it. The return
 value will be an automaton for the RegEx that the S-expression represents.
 
-## Provided test environment
+## The `CFG` class
 
-I've provided a `main.cpp` file that tests the functionality. To use it, you must provide an `input.txt` file with the following structure:
-```
-<number of states - integer>
-<state IDs - whitespace separated integers>
-<number of transitions - integer>  
-<transitions - sequences of "integer integer character" (without quotes) separated by whitespace>
-<initial state ID - integer>  
-<number of final states - integer>  
-<final state IDs - whitespace separated integers>  
-<number of words to test - integer>  
-<words to test - whitespace separated strings, use '_' as lambda character>
-```
-Note: to test the empty word, leave a blank line after all the non-blank words, remembering to also count the blank word when providing the number of words to test;
+The `CFG` implements context-free grammars. It takes grammars in CNF as an input and provides a method to verify inputs.
+The `CFG` class provides 2 methods that will be described below:
 
-## End notes
+- `CFG(1)`: this method takes a `std::unordered_map<std::string, std::vector<std::string>>` and initializes the grammar
+  with states with productions, mapping variables to vectors of rules (i.e. S -> AB | CD would
+  be `{{"S", {"AB", "CD"}}}`);
+- `verify_word(1)`: this method takes a `std::string` and returns a boolean value representing whether the word is
+  accepted or not;
 
-This project probably received more attention from me than it deserved. Mostly because it has been a great way to dive
-deeper into a new subject, which I would have otherwise left unexplored.
-It also contains lazy, incomplete, or straight up smelly code. That is a direct result of me being lazy, although I may
-argue over my choices (such as not using polymorphism between the 3 automaton types, because other than some conditions
-on the content, the structure stays the same). If by any chance you get to reach the end of this README and then have
-enough
-fucks to give left to look over the code, and can provide (preferably harsh, but constructive) feedback, please do
-either via an issue or contact channel you may find on my profile. Thanks for your attention.
+Usage is similar to other classes in this project, needing an initialized object from which the method for verifying
+words is called.
+
+## The `PDA` class
+
+This class is a copy of the `LNFA` class, with slight changes to accommodate for the stack.
+
+The `PDA` class provides 6 methods that will be described below:
+
+- `add_states(1)`: this method takes a `std::vector<int>` and creates states with those respective IDs, binding them to
+  the automata object from where it is called;
+- `add_arcs(1)`: this method takes a `std::vector<std::tuple<int, int, char, std::pair<char, std::string>>>` and creates
+  arcs from the respective tuples, treating their members as <source, destination, transition character, <stack pop
+  character, stack push word> - for empty pop/push operations on the stack use `_`;
+- `set_initial_state_id(1)`: this method takes an `int` and sets the state with that ID as the initial state;
+- `set_final_states(1)`: this method takes a `std::vector<int>` and sets the states with those respective IDs as final
+  states;
+- `test_acceptance(1)`: this method takes a `std::string` and returns a boolean value, `true` if the word is accepted by
+  the automata and `false` otherwise;
+- `set_lambda(1)`: this method sets what character is used to represent lambda when reading the inputs ('_' is used by
+  default);

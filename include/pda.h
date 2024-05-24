@@ -10,7 +10,7 @@
 
 namespace pda
 {
-    class pda
+    class PDA
     {
     private:
         std::unordered_map<int, State> states_;
