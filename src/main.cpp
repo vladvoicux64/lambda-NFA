@@ -46,7 +46,7 @@ int main()
     automata.set_initial_state_id(S);
     automata.set_final_states(final_state_ids);
 
-    std::cout << automata.test_acceptance("aaabbb") << std::endl;
+    std::cout << automata.test_acceptance("aaaabbbb") << std::endl;
 
     std::ifstream inputcfg("input.txt");
     std::unordered_map<std::string, std::vector<std::string>> prods;

@@ -65,11 +65,11 @@ bool pda::pda::test_acceptance(const std::string &word)
             return true;
         }
         for (const auto &state: current_state->propagate(word[current_index])) {
-            dfs_stack.emplace(state, current_index + 1);
+            dfs_stack.emplace(state.first, current_index + 1);
         }
         for (const auto &state: current_state->propagate(this->lambda_character_)) {
-            if (!std::get<0>(state)->reached_loop(current_index))
-                dfs_stack.emplace(state, current_index);
+            if (!state.first->reached_loop(current_index))
+                dfs_stack.emplace(state.first, current_index);
         }
     }
     this->clear_state_logs();
